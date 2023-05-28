@@ -9,6 +9,7 @@ import AuthService from "../services/AuthService";
 const DefaultProps = {
   login: () => null,
   logout: () => null,
+  signup: () => null,
   authAxios: axios,
   user: null,
 };
@@ -16,6 +17,7 @@ const DefaultProps = {
 export interface AuthProps {
   login: (username: string, password: string) => any;
   logout: () => void;
+  signup: (username: string, email: string, password: string) => any;
   authAxios: AxiosInstance;
   user: UserModel | null;
 }
@@ -38,6 +40,11 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
     AuthService.logout();
     setUser(null);
     navigate("/login");
+  }
+
+  async function signup(username: string, email: string, password: string) {
+    const data = await AuthService.signup(username, email, password);
+    return data;
   }
 
   // axios instance for making requests
@@ -63,7 +70,7 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, authAxios }}>
+    <AuthContext.Provider value={{ user, login, logout, signup, authAxios }}>
       {children}
     </AuthContext.Provider>
   );

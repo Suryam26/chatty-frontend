@@ -7,6 +7,7 @@ import { Navbar } from "./components/Navbar";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Conversations } from "./components/Conversations";
 import { ActiveConversations } from "./components/ActiveConversations";
+import { Signup } from "./components/Signup";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { NotificationContextProvider } from "./contexts/NotificationContext";
 import { UserStatusContextProvider } from "./contexts/UserStatusContext";
@@ -58,6 +59,7 @@ export default function App() {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
         </Route>
       </Routes>
     </BrowserRouter>

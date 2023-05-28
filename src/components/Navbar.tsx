@@ -64,14 +64,24 @@ export function Navbar() {
           >
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               {!user ? (
-                <li>
-                  <Link
-                    to="/login"
-                    className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                  >
-                    Login
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link
+                      to="/login"
+                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
+                    >
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/signup"
+                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
+                    >
+                      Signup
+                    </Link>
+                  </li>
+                </>
               ) : (
                 <>
                   <li>
