@@ -6,7 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 export function Login() {
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>(null);
   const { user, login } = useContext(AuthContext);
 
   const formik = useFormik({
@@ -18,10 +18,8 @@ export function Login() {
       setSubmitting(true);
       const { username, password } = values;
       const res = await login(username, password);
-      if (res.error || res.data) {
-        if (res.data && res.data.detail) {
-          setError(res.data.detail);
-        }
+      if (!res.token) {
+        setError(res);
       } else {
         navigate("/");
       }
@@ -33,7 +31,7 @@ export function Login() {
     if (user) {
       navigate("/");
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [user]);
 
   return (
@@ -46,7 +44,7 @@ export function Login() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
-          {error && <div>{JSON.stringify(error)}</div>}
+          {error && <div>{error.non_field_errors}</div>}
 
           <div className="-space-y-px rounded-md">
             <input

@@ -8,15 +8,18 @@ class AuthService {
   }
 
   async login(username: string, password: string): Promise<UserModel> {
-    const response = await axios.post("http://127.0.0.1:8000/auth-token/", {
-      username,
-      password,
-    });
-    if (!response.data.token) {
-      return response.data;
-    }
-    this.setUserInLocalStorage(response.data);
-    return response.data;
+    return await axios
+      .post("http://127.0.0.1:8000/auth-token/", {
+        username,
+        password,
+      })
+      .then((response) => {
+        this.setUserInLocalStorage(response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        return error.response.data;
+      });
   }
 
   async signup(
