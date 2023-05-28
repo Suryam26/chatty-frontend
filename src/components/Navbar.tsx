@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 import { AuthContext } from "../contexts/AuthContext";
@@ -7,6 +7,11 @@ import { NotificationContext } from "../contexts/NotificationContext";
 export function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const { unreadMessageCount } = useContext(NotificationContext);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <>
@@ -23,10 +28,11 @@ export function Navbar() {
             className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="mobile-menu"
             aria-expanded="false"
+            onClick={handleToggle}
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="w-6 h-6"
+              className={`${isMobileMenuOpen ? "hidden" : ""} w-6 h-6`}
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +44,7 @@ export function Navbar() {
               ></path>
             </svg>
             <svg
-              className="hidden w-6 h-6"
+              className={`${isMobileMenuOpen ? "" : "hidden"} w-6 h-6`}
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -50,51 +56,60 @@ export function Navbar() {
               ></path>
             </svg>
           </button>
-          <div className="hidden w-full md:block md:w-auto" id="mobile-menu">
+          <div
+            className={`${
+              isMobileMenuOpen ? "" : "hidden"
+            } w-full md:block md:w-auto`}
+            id="mobile-menu"
+          >
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
-              <li>
-                <Link
-                  to="/"
-                  className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
-                  aria-current="page"
-                >
-                  Home
-                  {unreadMessageCount > 0 && (
-                    <span className="ml-2 inline-flex items-center justify-center h-6 w-6 rounded-full bg-white">
-                      <span className="text-xs font-medium leading-none text-gray-800">
-                        {unreadMessageCount}
-                      </span>
-                    </span>
-                  )}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/chats"
-                  className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
-                  aria-current="page"
-                >
-                  Chats
-                </Link>
-              </li>
               {!user ? (
                 <li>
                   <Link
                     to="/login"
-                    className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
+                    className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
                   >
                     Login
                   </Link>
                 </li>
               ) : (
                 <>
+                  <li>
+                    <span className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white">
+                      Hi, {user.username}
+                    </span>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
+                      aria-current="page"
+                    >
+                      {unreadMessageCount > 0 && (
+                        <span className="mr-2 inline-flex items-center justify-center h-6 w-6 rounded-full bg-white">
+                          <span className="text-xs font-medium leading-none text-gray-800">
+                            {unreadMessageCount}
+                          </span>
+                        </span>
+                      )}
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/chats"
+                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
+                      aria-current="page"
+                    >
+                      Chats
+                    </Link>
+                  </li>
                   <button
-                    className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
+                    className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
                     onClick={logout}
                   >
                     Logout
                   </button>
-                  <span className="text-white">Hi, {user.username}</span>
                 </>
               )}
             </ul>
