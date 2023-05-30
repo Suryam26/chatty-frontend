@@ -5,7 +5,6 @@ import { Chat } from "./components/Chat";
 import { Login } from "./components/Login";
 import { Navbar } from "./components/Navbar";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Conversations } from "./components/Conversations";
 import { ActiveConversations } from "./components/ActiveConversations";
 import { Signup } from "./components/Signup";
 import { AuthContextProvider } from "./contexts/AuthContext";
@@ -35,16 +34,6 @@ export default function App() {
                     <ActiveConversations />
                   </UserStatusContextProvider>
                 </NotificationContextProvider>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="chats/"
-            element={
-              <ProtectedRoute>
-                <UserStatusContextProvider>
-                  <Conversations />
-                </UserStatusContextProvider>
               </ProtectedRoute>
             }
           />
