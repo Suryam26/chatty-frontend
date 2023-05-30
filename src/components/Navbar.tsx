@@ -1,5 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { BellIcon } from "@heroicons/react/24/outline";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { NotificationContext } from "../contexts/NotificationContext";
@@ -7,125 +10,78 @@ import { NotificationContext } from "../contexts/NotificationContext";
 export function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const { unreadMessageCount } = useContext(NotificationContext);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleToggle = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   return (
     <>
-      <nav className="bg-white border-gray-200 px-4 sm:px-6 py-2.5 rounded dark:bg-gray-800">
-        <div className="max-w-5xl mx-auto flex flex-wrap justify-between items-center">
-          <Link to="/" className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              Chatty
-            </span>
-          </Link>
-          <button
-            data-collapse-toggle="mobile-menu"
-            type="button"
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            aria-controls="mobile-menu"
-            aria-expanded="false"
-            onClick={handleToggle}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className={`${isMobileMenuOpen ? "hidden" : ""} w-6 h-6`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <svg
-              className={`${isMobileMenuOpen ? "" : "hidden"} w-6 h-6`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </button>
-          <div
-            className={`${
-              isMobileMenuOpen ? "" : "hidden"
-            } w-full md:block md:w-auto`}
-            id="mobile-menu"
-          >
-            <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
-              {!user ? (
-                <>
-                  <li>
-                    <Link
-                      to="/login"
-                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/signup"
-                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                    >
-                      Signup
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <span className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white">
-                      Hi, {user.username}
-                    </span>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                      aria-current="page"
-                    >
-                      {unreadMessageCount > 0 && (
-                        <span className="mr-2 inline-flex items-center justify-center h-6 w-6 rounded-full bg-white">
-                          <span className="text-xs font-medium leading-none text-gray-800">
-                            {unreadMessageCount}
-                          </span>
-                        </span>
-                      )}
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/chats"
-                      className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                      aria-current="page"
-                    >
-                      Chats
-                    </Link>
-                  </li>
-                  <button
-                    className="block py-2 pr-4 pl-3 text-right text-white md:p-0 dark:text-white"
-                    onClick={logout}
+      <Disclosure as="nav" className="bg-gray-800">
+        <>
+          <div className="mx-auto px-4 max-w-5xl">
+            <div className="relative flex h-16 items-center justify-between">
+              <div className="flex flex-1 pl-2 items-center sm:items-stretch sm:justify-start">
+                <Link to="/" className="flex items-center">
+                  <div className="flex flex-shrink-0 items-center">
+                    <img
+                      className="block h-8 w-auto lg:hidden"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                      alt="Your Company"
+                    />
+                    <img
+                      className="hidden h-8 w-auto lg:block"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                      alt="Your Company"
+                    />
+                  </div>
+                </Link>
+              </div>
+
+              {/* Profile and notification */}
+              <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div className="absolute rounded-full bg-gray-800 p-1 text-gray-400 right-24">
+                  <span className="sr-only">View notifications</span>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  {unreadMessageCount > 0 && (
+                    <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
+                      {unreadMessageCount}
+                    </div>
+                  )}
+                </div>
+
+                {/* Profile dropdown */}
+                <Menu as="div" className="relative ml-3">
+                  <div>
+                    <Menu.Button className="flex bg-gray-800 text-sm">
+                      <span className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'">
+                        Hi, {user?.username}
+                      </span>
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
                   >
-                    Logout
-                  </button>
-                </>
-              )}
-            </ul>
+                    <Menu.Items className="absolute right-0 z-10 mt-2  origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Item>
+                        <button
+                          onClick={logout}
+                          className="block px-4 py-2 w-48 text-sm text-gray-700"
+                        >
+                          Sign out
+                        </button>
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
+            </div>
           </div>
-        </div>
-      </nav>
+        </>
+      </Disclosure>
+
       <div className="max-w-5xl mx-auto py-6">
         <Outlet />
       </div>
