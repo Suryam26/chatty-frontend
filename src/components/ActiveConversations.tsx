@@ -57,52 +57,61 @@ export function ActiveConversations() {
   }
 
   return (
-    <div>
+    // eslint-disable-next-line
+    <ul role="list" className="divide-y divide-gray-100 px-4">
       {sortConversations(conversations).map(
-        (c) =>
-          c.last_message && (
-            <Link
-              to={`/chats/${createConversationName(c.other_user.username)}`}
-              key={c.other_user.username}
-            >
-              <div className="border border-gray-200 w-full p-3">
-                <div className="flex justify-between">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    {c.other_user.username}
-                    {c.other_user.username === user?.username && (
-                      <span> (You)</span>
-                    )}
-                  </h3>
-                  {getUnreadCount(c.other_user.username) && (
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-800">
-                      <span className="text-xs text-center font-medium leading-none text-white">
-                        {getUnreadCount(c.other_user.username)}
+        (person) =>
+          person.last_message && (
+            <li key={person.other_user.username}>
+              <Link
+                className="flex justify-between rounded-lg gap-x-6 py-5 px-5 hover:bg-gray-100"
+                to={`/chats/${createConversationName(
+                  person.other_user.username
+                )}`}
+              >
+                <div className="flex gap-x-4">
+                  <div className="min-w-0 flex-auto">
+                    <p className="font-semibold leading-6 text-gray-900">
+                      {person.other_user.username}{" "}
+                      {person.other_user.username === user?.username && (
+                        <span> (You)</span>
+                      )}
+                    </p>
+                    <p
+                      className={`mt-1 truncate text-sm leading-5  ${
+                        person.last_message.is_deleted ||
+                        (typing.typing &&
+                          typing.name === person.other_user.username)
+                          ? "italic text-gray-500"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {typing.typing &&
+                      typing.name === person.other_user.username
+                        ? "typing..."
+                        : person.last_message?.content}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end">
+                  <p className="text-sm h-6 leading-6 text-gray-900">
+                    {getUnreadCount(person.other_user.username) && (
+                      <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-800">
+                        <span className="text-xs text-center font-medium leading-none text-white">
+                          {getUnreadCount(person.other_user.username)}
+                        </span>
                       </span>
-                    </span>
-                  )}
-                </div>
+                    )}
+                  </p>
 
-                <div className="flex justify-between">
-                  <p
-                    className={`text-gray-700 ${
-                      c.last_message.is_deleted ||
-                      (typing.typing && typing.name === c.other_user.username)
-                        ? "italic"
-                        : ""
-                    }`}
-                  >
-                    {typing.typing && typing.name === c.other_user.username
-                      ? "typing..."
-                      : c.last_message?.content}
-                  </p>
-                  <p className="text-gray-700">
-                    {formatMessageTimestamp(c.last_message?.timestamp)}
+                  <p className="mt-1 text-xs leading-5 text-gray-500">
+                    {formatMessageTimestamp(person.last_message?.timestamp)}
                   </p>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </li>
           )
       )}
-    </div>
+    </ul>
   );
 }
