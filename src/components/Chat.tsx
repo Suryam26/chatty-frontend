@@ -1,8 +1,12 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHotkeys } from "react-hotkeys-hook";
+import {
+  ArrowSmallLeftIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/outline";
 
 import { MessageModel } from "../models/Message";
 import { Message } from "./Message";
@@ -237,69 +241,91 @@ export function Chat() {
   }
 
   return (
-    <div>
-      {conversation && userStatus && (
-        <div className="py-6">
-          <h3 className="text-3xl font-semibold text-gray-900">
-            {conversation.other_user.username}
-          </h3>
-          <span className="text-sm">
-            {typing ? (
-              <p className="truncate text-sm text-gray-500">typing...</p>
-            ) : userStatus.online ? (
-              "online"
-            ) : (
-              <Status status={userStatus} />
-            )}
-          </span>
-        </div>
-      )}
-      <ul className="mt-3 flex flex-col-reverse relative w-full border border-gray-200 overflow-y-auto p-6">
-        <div className="flex w-full items-center justify-between border border-gray-200 p-3">
-          <input
-            type="text"
-            placeholder="Message"
-            className="block w-full rounded-full bg-gray-100 p-3 outline-none focus:text-gray-700"
-            name="message"
-            value={message}
-            onChange={handleChangeMessage}
-            required
-            ref={inputReference}
-            maxLength={511}
-          />
+    <>
+      <div className="flex justify my-2 px-4">
+        <Link to="/">
           <button
-            className="ml-3 rounded-full bg-gray-300 p-3"
-            onClick={handleSubmit}
+            type="button"
+            className="
+              shadow hover:shadow-lg focus:outline-none 
+              font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            Send
+            <div className="flex">
+              <ArrowSmallLeftIcon
+                className="h-4 w-4 mr-2 my-auto"
+                aria-hidden="true"
+              />
+              <div className="leading-6">Home</div>
+            </div>
           </button>
-        </div>
-        <div
-          id="scrollableDiv"
-          className="h-[20rem] mt-3 flex flex-col-reverse relative w-full border border-gray-200 overflow-y-auto p-6"
-        >
-          <div>
-            {/* Put the scroll bar always on the bottom */}
-            <InfiniteScroll
-              dataLength={messageHistory.length}
-              next={fetchMessages}
-              className="flex flex-col-reverse" // To put endMessage and loader to the top
-              inverse={true}
-              hasMore={hasMoreMessages}
-              loader={<ChatLoader />}
-              scrollableTarget="scrollableDiv"
+        </Link>
+      </div>
+
+      <div className="px-3">
+        <ul className="mt-3 flex flex-col-reverse relative w-full border rounded-lg overflow-y-auto">
+          <div className="flex w-full items-center justify-between bg-gray-100 rounded-b-lg p-3">
+            <input
+              type="text"
+              className="block w-full rounded-full border-none shadow focus:ring-transparent p-3"
+              name="message"
+              value={message}
+              onChange={handleChangeMessage}
+              required
+              ref={inputReference}
+              maxLength={511}
+            />
+            <button
+              className="ml-3 rounded-full shadow hover:shadow-lg bg-white p-3"
+              onClick={handleSubmit}
             >
-              {messageHistory.map((message: MessageModel) => (
-                <Message
-                  key={message.id}
-                  message={message}
-                  deleteMessage={deleteMessage}
-                />
-              ))}
-            </InfiniteScroll>
+              <PaperAirplaneIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
-        </div>
-      </ul>
-    </div>
+
+          <div
+            id="scrollableDiv"
+            className="h-[50vh] bg-gray-100 flex flex-col-reverse relative w-full overflow-y-auto p-6"
+          >
+            <div>
+              {/* Put the scroll bar always on the bottom */}
+              <InfiniteScroll
+                dataLength={messageHistory.length}
+                next={fetchMessages}
+                className="flex flex-col-reverse" // To put endMessage and loader to the top
+                inverse={true}
+                hasMore={hasMoreMessages}
+                loader={<ChatLoader />}
+                scrollableTarget="scrollableDiv"
+              >
+                {messageHistory.map((message: MessageModel) => (
+                  <Message
+                    key={message.id}
+                    message={message}
+                    deleteMessage={deleteMessage}
+                  />
+                ))}
+              </InfiniteScroll>
+            </div>
+          </div>
+
+          {conversation && userStatus && (
+            <div className="p-6 rounded-t-lg shadow">
+              <h3 className="text-2xl text-gray-900">
+                {conversation.other_user.username}
+                <span className="text-sm ml-3 text-gray-500">
+                  {typing ? (
+                    <p className="inline italic truncate text-sm text-gray-500">typing...</p>
+                  ) : userStatus.online ? (
+                    "online"
+                  ) : (
+                    <Status status={userStatus} />
+                  )}
+                </span>
+              </h3>
+            </div>
+          )}
+        </ul>
+      </div>
+    </>
   );
 }
