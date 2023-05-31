@@ -45,7 +45,7 @@ export function Conversations({ closeModal }: any) {
       >
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="fixed inset-0 z-10 overflow-y-auto px-3">
           <div className="max-w-md mx-auto my-4 mt-24">
             <div className="relative flex items-center w-full h-12 bg-gray-50 rounded-lg shadow overflow-hidden">
               <div className="grid place-items-center h-full w-12 text-gray-300">

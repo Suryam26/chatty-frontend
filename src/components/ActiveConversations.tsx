@@ -5,6 +5,7 @@ import { Conversations } from "./Conversations";
 import { AuthContext } from "../contexts/AuthContext";
 import { ConversationModel } from "../models/Conversation";
 import { NotificationContext } from "../contexts/NotificationContext";
+import { PlusSmallIcon } from "@heroicons/react/24/outline";
 
 export function ActiveConversations() {
   const { user } = useContext(AuthContext);
@@ -72,7 +73,10 @@ export function ActiveConversations() {
               font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           onClick={() => setIsModalOpen(true)}
         >
-          New Chat
+          <div className="flex">
+            <PlusSmallIcon className="h-6 w-6" aria-hidden="true" />
+            <div className="leading-6">New Chat</div>
+          </div>
         </button>
       </div>
 
