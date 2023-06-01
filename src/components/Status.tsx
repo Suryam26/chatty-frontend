@@ -40,6 +40,10 @@ export function Status({ status }: any) {
   }
 
   function formatLastSeenDateTime(lastActiveDateTimeStr: string) {
+    if (lastActiveDateTimeStr === undefined) {
+      return "never";
+    }
+
     var currentDate = new Date();
     var lastActiveDateTime = new Date(lastActiveDateTimeStr);
 

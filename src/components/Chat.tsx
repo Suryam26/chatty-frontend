@@ -299,9 +299,9 @@ export function Chat() {
                   />
                 </Link>
                 {conversation.other_user.username}
-                <span className="text-sm ml-3 text-gray-500">
+                <span className="text-xs ml-2 text-gray-500">
                   {typing ? (
-                    <p className="inline italic truncate text-sm text-gray-500">
+                    <p className="inline italic truncate text-gray-500">
                       typing...
                     </p>
                   ) : userStatus.online ? (
