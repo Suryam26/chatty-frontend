@@ -242,28 +242,9 @@ export function Chat() {
 
   return (
     <>
-      <div className="flex justify my-2 px-4">
-        <Link to="/">
-          <button
-            type="button"
-            className="
-              shadow hover:shadow-lg focus:outline-none 
-              font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            <div className="flex">
-              <ArrowSmallLeftIcon
-                className="h-4 w-4 mr-2 my-auto"
-                aria-hidden="true"
-              />
-              <div className="leading-6">Home</div>
-            </div>
-          </button>
-        </Link>
-      </div>
-
       <div className="px-3">
-        <ul className="mt-3 flex flex-col-reverse relative w-full border rounded-lg overflow-y-auto">
-          <div className="flex w-full items-center justify-between bg-gray-100 rounded-b-lg p-3">
+        <ul className="mt-3 flex flex-col-reverse relative w-full shadow rounded-lg overflow-y-auto">
+          <div className="flex w-full items-center justify-between shadow bg-gray-100 rounded-b-lg p-3">
             <input
               type="text"
               className="block w-full rounded-full border-none shadow focus:ring-transparent p-3"
@@ -284,7 +265,7 @@ export function Chat() {
 
           <div
             id="scrollableDiv"
-            className="h-[50vh] bg-gray-100 flex flex-col-reverse relative w-full overflow-y-auto p-6"
+            className="h-[60vh] shadow-inner bg-gray-100 flex flex-col-reverse relative w-full overflow-y-auto p-6"
           >
             <div>
               {/* Put the scroll bar always on the bottom */}
@@ -311,10 +292,18 @@ export function Chat() {
           {conversation && userStatus && (
             <div className="p-6 rounded-t-lg shadow">
               <h3 className="text-2xl text-gray-900">
+                <Link to="/">
+                  <ArrowSmallLeftIcon
+                    className="inline h-5 w-5 mx-3"
+                    aria-hidden="true"
+                  />
+                </Link>
                 {conversation.other_user.username}
                 <span className="text-sm ml-3 text-gray-500">
                   {typing ? (
-                    <p className="inline italic truncate text-sm text-gray-500">typing...</p>
+                    <p className="inline italic truncate text-sm text-gray-500">
+                      typing...
+                    </p>
                   ) : userStatus.online ? (
                     "online"
                   ) : (

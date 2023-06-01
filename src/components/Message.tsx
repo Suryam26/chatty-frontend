@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { CheckCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { MessageModel } from "../models/Message";
@@ -14,6 +15,7 @@ export function classNames(...classes: any) {
 
 export function Message({ message, deleteMessage }: MessageProps) {
   const { user } = useContext(AuthContext);
+  const [showDel, setShowDel] = useState<boolean>(false);
 
   function formatMessageTimestamp(timestamp: string) {
     const date = new Date(timestamp);
@@ -29,24 +31,20 @@ export function Message({ message, deleteMessage }: MessageProps) {
           ? "justify-start"
           : "justify-end"
       )}
+      onClick={() => setShowDel(!showDel)}
     >
-      <div
-        className={classNames(
-          "relative max-w-xl rounded-lg px-2 py-1 text-gray-700 shadow",
-          user!.username !== message.from_user.username ? "" : "bg-gray-100"
-        )}
-      >
+      <div className="relative max-w-xl rounded-lg px-2 py-1 shadow bg-white">
         <div className="flex items-end">
           <span
             className={classNames(
               "block",
-              message.is_deleted ? "italic text-sm" : ""
+              message.is_deleted ? "italic text-sm text-gray-500" : ""
             )}
           >
             {message.content}
           </span>
           <span
-            className="ml-2"
+            className="ml-2 text-gray-500"
             style={{
               fontSize: "0.6rem",
               lineHeight: "1rem",
@@ -62,13 +60,18 @@ export function Message({ message, deleteMessage }: MessageProps) {
                 lineHeight: "1rem",
               }}
             >
-              {message.read ? "seen" : "received"}
+              {message.read ? (
+                <CheckCircleIcon
+                  className="h-5 w-5 text-blue-600"
+                  aria-hidden="true"
+                />
+              ) : (
+                <CheckCircleIcon className="h-5 w-5" aria-hidden="true" />
+              )}
             </span>
           )}
-        </div>
-        {message.is_deleted ||
-          (user!.username === message.from_user.username && (
-            <div className="flex items-end">
+          {message.is_deleted ||
+            (user!.username === message.from_user.username && showDel && (
               <button
                 className="ml-auto"
                 style={{
@@ -77,10 +80,13 @@ export function Message({ message, deleteMessage }: MessageProps) {
                 }}
                 onClick={() => deleteMessage(message.id)}
               >
-                delete
+                <TrashIcon
+                  className="h-5 w-5 text-red-500"
+                  aria-hidden="true"
+                />
               </button>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </li>
   );
