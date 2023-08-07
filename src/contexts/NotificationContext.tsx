@@ -61,6 +61,9 @@ export const NotificationContextProvider: React.FC<{ children: ReactNode }> = ({
           case "typing_notification":
             setTyping(data);
             break;
+          case "delete_message":
+            setUnreadCountList([...unreadCountList]);
+            break;
           default:
             console.log("Unknown message type!");
             break;
