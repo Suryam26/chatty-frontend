@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Conversations } from "./Conversations";
 import { AuthContext } from "../contexts/AuthContext";
@@ -8,6 +8,7 @@ import { NotificationContext } from "../contexts/NotificationContext";
 import { PlusSmallIcon } from "@heroicons/react/24/outline";
 
 export function ActiveConversations() {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { unreadCountList, typing } = useContext(NotificationContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,13 +18,21 @@ export function ActiveConversations() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const res = await fetch("http://127.0.0.1:8000/api/conversations/", {
+      fetch("http://127.0.0.1:8000/api/conversations/", {
         headers: {
           Authorization: `Token ${user?.token}`,
         },
-      });
-      const data = await res.json();
-      setActiveConversations(data);
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setActiveConversations(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/login");
+        });
     }
     fetchUsers();
   }, [user, unreadCountList]);
