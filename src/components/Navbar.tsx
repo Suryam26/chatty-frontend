@@ -35,8 +35,8 @@ export function Navbar() {
               </div>
 
               {/* Profile and notification */}
-              <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div className="absolute rounded-full bg-gray-800 p-1 text-gray-400 right-24">
+              <div className="flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div className="relative left-0 rounded-full bg-gray-800 p-1 text-gray-400 right-24">
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                   {unreadMessageCount > 0 && (
